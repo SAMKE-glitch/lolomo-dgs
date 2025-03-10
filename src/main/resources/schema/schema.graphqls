@@ -1,0 +1,17 @@
+# define a type Query which is Lolomo of ShowCategory
+type Query {
+    lolomo: [ShowCategory]
+}
+
+# define the type of ShowCategory
+type ShowCategory {
+    id: Int
+    name: String
+    shows: [Show]
+}
+
+# defining the Show type
+type Show {
+    title: String
+    artworkUrl: String
+}
