@@ -2,18 +2,24 @@ package com.netflix.lolomodemo.datafetchers;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.lolomodemo.ShowsRepository;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
 
 import java.util.List;
 
 @DgsComponent // registers this class as a GraphQL component in Spring
 public class LolomoDatafetcher {
+    private final ShowsRepository showsRepository;
+
+    public LolomoDatafetcher(ShowsRepository showsRepository) {
+        this.showsRepository = showsRepository;
+    }
 
     @DgsQuery // maps this method to the lolomo query in schema
     public List<ShowCategory> lolomo() {
         return List.of(
-                ShowCategory.newBuilder().id(1).name("Top 10").shows().build(),
-                ShowCategory.newBuilder().id(2).name("Continue Watching").build()
+                ShowCategory.newBuilder().id(1).name("Top 10").shows(showsRepository.showsForCategory(1)).build(),
+                ShowCategory.newBuilder().id(2).name("Continue Watching").shows(showsRepository.showsForCategory(2)).build()
         );
     }
 }
