@@ -10,6 +10,7 @@ import com.netflix.lolomodemo.codegen.types.Show;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @DgsComponent // registers this class as a GraphQL component in Spring
 public class LolomoDatafetcher {
@@ -28,12 +29,21 @@ public class LolomoDatafetcher {
                 ShowCategory.newBuilder().id(2).name("Continue Watching").shows(showsRepository.showsForCategory(2)).build()
         );
     }
-
-    // We specify this datafetcher for this particular field in Show object/list
-    @DgsData(parentType = "Show")
+    // artworkUrl method with VirtualThreads
+    // with application.properties under resources set to dgs.graphql.virtualthreads.enabled=true
+    /**@DgsData(parentType = "Show")
     public String artworkUrl(DgsDataFetchingEnvironment dfe) {
         Show show = dfe.getSourceOrThrow();
         return artworkService.generateForTitle(show.getTitle());
 
+    }**/
+
+    // We specify this datafetcher for this particular field in Show object/list
+    @DgsData(parentType = "Show")
+    public CompletableFuture<String> artworkUrl(DgsDataFetchingEnvironment dfe) {
+        return CompletableFuture.supplyAsync(() -> {
+            Show show = dfe.getSourceOrThrow();
+            return artworkService.generateForTitle(show.getTitle());
+        }).exceptionally(ex -> "default_artwork_url");
     }
 }
