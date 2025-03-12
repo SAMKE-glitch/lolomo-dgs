@@ -2,6 +2,7 @@ package com.netflix.lolomodemo.datafetchers;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.lolomodemo.ArtworkService;
 import com.netflix.lolomodemo.ShowsRepository;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
 
@@ -10,9 +11,11 @@ import java.util.List;
 @DgsComponent // registers this class as a GraphQL component in Spring
 public class LolomoDatafetcher {
     private final ShowsRepository showsRepository;
+    private final ArtworkService artworkService;
 
-    public LolomoDatafetcher(ShowsRepository showsRepository) {
+    public LolomoDatafetcher(ShowsRepository showsRepository, ArtworkService artworkService) {
         this.showsRepository = showsRepository;
+        this.artworkService = artworkService;
     }
 
     @DgsQuery // maps this method to the lolomo query in schema
