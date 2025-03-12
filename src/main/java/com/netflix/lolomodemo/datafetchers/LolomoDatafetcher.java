@@ -1,9 +1,12 @@
 package com.netflix.lolomodemo.datafetchers;
 
 import com.netflix.graphql.dgs.DgsComponent;
+import com.netflix.graphql.dgs.DgsData;
+import com.netflix.graphql.dgs.DgsDataFetchingEnvironment;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.lolomodemo.ArtworkService;
 import com.netflix.lolomodemo.ShowsRepository;
+import com.netflix.lolomodemo.codegen.types.Show;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
 
 import java.util.List;
@@ -24,5 +27,13 @@ public class LolomoDatafetcher {
                 ShowCategory.newBuilder().id(1).name("Top 10").shows(showsRepository.showsForCategory(1)).build(),
                 ShowCategory.newBuilder().id(2).name("Continue Watching").shows(showsRepository.showsForCategory(2)).build()
         );
+    }
+
+    // We specify this datafetcher for this particular field in Show object/list
+    @DgsData(parentType = "Show")
+    public String artworkUrl(DgsDataFetchingEnvironment dfe) {
+        Show show = dfe.getSourceOrThrow();
+        return artworkService.generateForTitle(show.getTitle());
+
     }
 }
