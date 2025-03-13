@@ -1,12 +1,10 @@
 package com.netflix.lolomodemo.datafetchers;
 
-import com.netflix.graphql.dgs.DgsComponent;
-import com.netflix.graphql.dgs.DgsData;
-import com.netflix.graphql.dgs.DgsDataFetchingEnvironment;
-import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.graphql.dgs.*;
 import com.netflix.lolomodemo.ArtworkService;
 import com.netflix.lolomodemo.ShowsRepository;
 import com.netflix.lolomodemo.codegen.types.Show;
+import com.netflix.lolomodemo.codegen.types.SearchFilter;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
 
 import java.util.List;
@@ -82,4 +80,8 @@ public class LolomoDatafetcher {
             return "default_artwork_url";});
     }
 
+    @DgsQuery
+    public List<Show>search(@InputArgument SearchFilter searchFilter) {
+        return showsRepository.allShows().stream().filter(s -> s.getTitle().startsWith(searchFilter.getTitle())).toList();
+    }
 }
