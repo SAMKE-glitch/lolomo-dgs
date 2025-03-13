@@ -31,7 +31,7 @@ class LolomoDatafetcherTest {
         List<Show> mockShows = List.of(
                 Show.newBuilder().title("The Witcher").build(),
                 Show.newBuilder().title("Wednesday").build(),
-                Show.newBuilder().title("The Witcher").build()
+                Show.newBuilder().title("The Last Dance").build()
         );
         when(showsRepository.allShows()).thenReturn(mockShows);
 
