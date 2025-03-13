@@ -74,7 +74,7 @@ public class LolomoDatafetcher {
             // Retrieving the current Show object from the dfe
             Show show = dfe.getSourceOrThrow();
 
-            // Generate the artwork URL using the show's title
+
             String artworkUrl = artworkService.generateForTitle(show.getTitle());
 
             return artworkUrl;
