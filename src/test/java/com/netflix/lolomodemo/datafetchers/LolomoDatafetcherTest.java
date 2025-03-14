@@ -45,4 +45,48 @@ class LolomoDatafetcherTest {
         // Verify repository interaction
         verify(showsRepository, times(1)).allShows();
     }
+
+    @Test
+    void search_ShouldReturnAllShowsWhenTitleIsEmpty() {
+        // Arrange
+        SearchFilter filter = SearchFilter.newBuilder().title("").build(); // Empty title
+        List<Show> mockShows = List.of(
+                Show.newBuilder().title("The Witcher").build(),
+                Show.newBuilder().title("Wednesday").build()
+        );
+        when(showsRepository.allShows()).thenReturn(mockShows);
+
+        // Act
+        List<Show> results = lolomoDatafetcher.search(filter);
+
+        // Assert
+        assertEquals(2, results.size());
+        verify(showsRepository).allShows();
+    }
+    @Test
+    void search_ShouldReturnEmptyListWhenNoMatches() {
+        // Arrange
+        SearchFilter filter = SearchFilter.newBuilder().title("XYZ").build();
+        when(showsRepository.allShows()).thenReturn(List.of()); // Empty list
+
+        // Act
+        List<Show> results = lolomoDatafetcher.search(filter);
+
+        // Assert
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    void search_ShouldCallAllShowsOnce() {
+        // Arrange
+        SearchFilter filter = SearchFilter.newBuilder().title("The").build();
+        when(showsRepository.allShows()).thenReturn(List.of());
+
+        // Act
+        lolomoDatafetcher.search(filter);
+
+        // Assert
+        verify(showsRepository, times(1)).allShows();
+        verifyNoMoreInteractions(showsRepository); // No other methods called
+    }
 }
