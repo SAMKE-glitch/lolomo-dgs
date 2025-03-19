@@ -512,3 +512,6 @@ db.serverStatus()
     - Leverage index intersection
     - Consider partial indexes for specific use cases
     - Monitor and tune based on usage patterns 
+
+
+### Need to go through this Daily
