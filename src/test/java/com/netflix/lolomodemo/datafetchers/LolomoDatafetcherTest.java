@@ -6,6 +6,7 @@ import com.netflix.lolomodemo.ShowsRepository;
 import com.netflix.lolomodemo.codegen.types.SearchFilter;
 import com.netflix.lolomodemo.codegen.types.Show;
 import com.netflix.lolomodemo.codegen.types.ShowCategory;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -281,3 +282,17 @@ class LolomoDatafetcherTest {
         verifyNoMoreInteractions(showsRepository); // No other methods called
     }
 }
+/**
+@Test
+@DisplayName("getTerritory(): returns null when territoryId is null")
+void shouldReturnNullWhenTerritoryIdIsNull() {
+    // ARRANGE
+    DeliveryNote deliveryNote = new DeliveryNote(); // territoryId not set (remains null)
+    when(dfe.getSource()).thenReturn(deliveryNote);
+
+    // ACT
+    CompletableFuture<Territory> result = graphQLHandler.getTerritory(dfe);
+
+    // ASSERT
+    assertNull(result, "The result should be null if territoryId is null");
+}**/
